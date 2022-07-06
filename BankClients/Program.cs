@@ -1,1 +1,2 @@
-﻿AppModel.Start();
+﻿AppModel App = new();
+App.Start();

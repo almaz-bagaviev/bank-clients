@@ -3,34 +3,30 @@
 public class Repository
 {
     static Random random;
-    List<Client> client;
+    List<Client> clients;
+    ClientsContext context;
 
     static Repository()
     {
-        random = new Random();
+        random = new();
     }
 
     public Repository(List<Client> clients)
     {
-        this.client = clients;
+        this.clients = clients;
+        context = new();
     }
 
-    /// <summary>
-    /// Метод добавления рандомных сотрудников
-    /// </summary>
-    /// <returns></returns>
     public static List<Client> GetRepository()
     {
         List<Client> newClient = new();
-
         for (int i = 0; i < 5; i++)
         {
             newClient.Add(new Client(
-                i + 1,
-                DateTime.Now,
+                i+1,
                 $"Сотрудник {i + 1}",
                 random.Next(18, 60),
-                random.Next(155, 201),
+                "****  ******",
                 new DateTime(random.Next(1970, 2004), random.Next(1, 13), random.Next(1, 29)),
                 $"Город {i + 1}"
                 ));
@@ -38,54 +34,39 @@ public class Repository
         return newClient;
     }
 
-    /// <summary>
-    /// Добавление записи
-    /// </summary>
-    /// <param name="addClient"></param>
-    public void Add(Client addClient)
-    {
-        client.Add(addClient);
-    }
+    public void Add(Client addClient) => clients.Add(addClient);
 
-    /// <summary>
-    /// Удаление записи
-    /// </summary>
-    /// <param name="index">Индекс удаляемого сотрудника</param>
     public void Remove(int index)
     {
         int findIndex = -1;
-        for (int i = 0; i < client.Count; i++)
+        for (int i = 0; i < clients.Count; i++)
         {
-            if (client[i].Id == index) findIndex = i;
+            if (clients[i].Id == index) findIndex = i;
         }
 
         if (findIndex == -1) return;
 
-        for (int i = findIndex; i < client.Count - 1; i++)
+        for (int i = findIndex; i < clients.Count - 1; i++)
         {
-            client[findIndex] = client[findIndex + 1];
+            clients[findIndex] = clients[findIndex + 1];
         }
 
-        client.Remove(client[findIndex]);
+        clients.Remove(clients[findIndex]);
     }
 
-    /// <summary>
-    /// Метод сохранения информации о сотруднике с использованием StreamWriter и StreamReader
-    /// </summary>
-    /// <param name="path"></param>
     public void Save(string path)
     {
         using (StreamWriter streamWriter = new StreamWriter(path))
         {
 
-            foreach (var e in client)
+            foreach (var e in clients)
             {
                 string note = string.Empty;
-                note += $"{e.Id,3}\t";
+                note += $"{e.Passport,3}\t";
                 note += $"{e.Date,20}\t";
                 note += $"{e.FullName,40}\t";
                 note += $"{e.Age,3}\t";
-                note += $"{e.Growth,4}\t";
+                note += $"{e.Passport,12}\t";
                 note += $"{e.DateOfBirth.ToShortDateString(),10}\t";
                 note += $"{e.PlaceOfBirth,22}\t";
 
@@ -98,19 +79,24 @@ public class Repository
             string line;
             while ((line = streamReader.ReadLine()) != null)
             {
-                Console.WriteLine(streamReader.ReadLine());
+                WriteLine(streamReader.ReadLine());
             }
         };
     }
 
+    public void Save2DB()
+    {
+        foreach (var addClients in clients)
+        {
+            context.ClientTable.Add(addClients);
+        }
+        context.SaveChanges();
+    }
 
-    /// <summary>
-    /// Сортировка по дате Дней рождения сотрудников по Возрастанию
-    /// </summary>
     public void SortByDateOfBirth_Ascending()
     {
         //public void Sort(int index, int count, IComparer<T> comparer);
-        client.Sort(SortAscending);
+        clients.Sort(SortAscending);
     }
     private int SortAscending(Client x, Client y)
     {
@@ -118,13 +104,9 @@ public class Repository
         return x.DateOfBirth < y.DateOfBirth ? -1 : x.DateOfBirth > y.DateOfBirth ? 1 : 0;
     }
 
-
-    /// <summary>
-    /// Сортировка по дате Дней рождения сотрудников по Убыванию
-    /// </summary>
     public void SortByDateOfBirth_Descending()
     {
-        client.Sort(SortDescending);
+        clients.Sort(SortDescending);
     }
     private int SortDescending(Client x, Client y)
     {
@@ -132,16 +114,12 @@ public class Repository
         return x.DateOfBirth < y.DateOfBirth ? 1 : x.DateOfBirth > y.DateOfBirth ? -1 : 0;
     }
 
-
-    /// <summary>
-    /// Печать информации о сотрудниках
-    /// </summary>
     public string Print()
     {
         StringBuilder stringBuilder = new();
-        for (int i = 0; i < client.Count; i++)
+        for (int i = 0; i < clients.Count; i++)
         {
-            stringBuilder.Append($"{client[i]}\n");
+            stringBuilder.Append($"{clients[i]}\n");
         }
         return stringBuilder.ToString();
     }

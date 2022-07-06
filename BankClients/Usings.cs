@@ -4,3 +4,5 @@ global using System.Text;
 global using BankClients.Entities;
 global using BankClients.Models;
 global using BankClients.Repositories;
+global using BankClients.Contexts;
+global using Microsoft.EntityFrameworkCore;

@@ -3,67 +3,49 @@
 public class AppModel
 {
     static Repository repository;
+    static Client client;
+    List<Client> clients;
 
-    static AppModel()
+    public AppModel()
     {
         repository = new(Repository.GetRepository());
     }
 
-    public static void Start()
-    {
-        Menu();
-    }
+    public void Start() => Menu();
 
-    /// <summary>
-    /// Метод ручного добавления сотрудника пользователем
-    /// </summary>
-    /// <returns></returns>
-    static Client NewWorker()
+    static Client GetClient()
     {
-        Client client = new();
+        client = new();
 
-        //ID
-        bool IDFlag = false;
-        while (!IDFlag)
+        bool IdFlag = false;
+        while (!IdFlag)
         {
-            Write("ID: ");
-            if (IDFlag = int.TryParse(ReadLine(), out int UserID))
+            Write("Id: ");
+            if (IdFlag = int.TryParse(ReadLine(), out int UserNo))
             {
-                client.Id = UserID;
+                client.No = UserNo;
             }
         }
 
-        //Дата и время добавления записи:
         client.Date = DateTime.Now;
         WriteLine($"Дата и время добавления записи: {client.Date} ");
 
-        //Ф.И.О:
         Write("Ф.И.О: ");
         client.FullName = ReadLine();
 
-        //Возраст:
         bool AgeFlag = false;
         while (!AgeFlag)
         {
             Write("Возраст: ");
-            if (AgeFlag = int.TryParse(ReadLine(), out int UserAge)) //Возраст AgeFlag должен быть цифрой
+            if (AgeFlag = int.TryParse(ReadLine(), out int UserAge))
             {
                 client.Age = UserAge;
             }
         }
 
-        //Рост:
-        bool GrowthFlag = false;
-        while (!GrowthFlag)
-        {
-            Write("Рост: ");
-            if (GrowthFlag = int.TryParse(ReadLine(), out int UserGrowth))
-            {
-                client.Growth = UserGrowth;
-            }
-        }
+        Write("Паспортные данные: ");
+        client.Passport = ReadLine();
 
-        //Дата рождения
         bool dateFlag = false;
         while (!dateFlag)
         {
@@ -74,37 +56,29 @@ public class AppModel
             }
         }
 
-        //Место рождения
         Write("Место рождения: ");
         client.PlaceOfBirth = ReadLine();
 
         return client;
     }
 
-    /// <summary>
-    /// Метод вычисления индекса удаляемого сотрудника
-    /// </summary>
-    /// <returns></returns>
     static int IndexForRemoveWorker()
     {
         int WorkerRemoveIndex;
         bool indexFlag = false;
         do
         {
-            Write("Индекс, по которому удаляется Сотрудник:");
+            Write("Индекс, по которому удаляется Сотрудник: ");
             indexFlag = int.TryParse(ReadLine(), out WorkerRemoveIndex);
         } while (!indexFlag);
 
         return WorkerRemoveIndex;
     }
 
-    /// <summary>
-    /// Меню при запуске приложения
-    /// </summary>
     static void Menu()
     {
         string userChoice = string.Empty;
-        while (userChoice != "7")
+        while (userChoice != "8")
         {
             StartText();
 
@@ -112,23 +86,19 @@ public class AppModel
 
             switch (userChoice)
             {
-                case "1": repository.Add(NewWorker()); break;
+                case "1": repository.Add(GetClient()); break;
                 case "2": WriteLine(repository.Print()); break;
                 case "3": repository.Remove(IndexForRemoveWorker()); break;
                 case "4": repository.SortByDateOfBirth_Ascending(); break;
                 case "5": repository.SortByDateOfBirth_Descending(); break;
                 case "6": repository.Save(UserPath()); break;
-                case "7": break;
+                case "7": repository.Save2DB(); break;
+                case "8": break;
 
                 default: WriteLine($"Выберите правильный пукт Меню\n"); break;
             }
         }
     }
-
-    /// <summary>
-    /// Метод ввода пользователем имени для сохраняемого файла
-    /// </summary>
-    /// <returns></returns>
     static string UserPath()
     {
         Write("Введите имя файла для сохранения на компьютере: ");
@@ -138,9 +108,6 @@ public class AppModel
         return FullNamePath;
     }
 
-    /// <summary>
-    /// Текст для выбора действий пользователем при Старте
-    /// </summary>
     static void StartText()
     {
         string text = $"\nСписок сотрудников" +
@@ -150,7 +117,8 @@ public class AppModel
                 $"\nСортировка по возрастанию даты - 4" +
                 $"\nСортировка по убыванию даты - 5" +
                 $"\nСохранить в файл - 6" +
-                $"\nВыход - 7";
+                $"\nСохранить в Базу данных - 7" +
+                $"\nВыход - 8";
 
         WriteLine(text);
     }
