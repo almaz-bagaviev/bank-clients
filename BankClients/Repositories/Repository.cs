@@ -41,7 +41,7 @@ public class Repository
         int findIndex = -1;
         for (int i = 0; i < clients.Count; i++)
         {
-            if (clients[i].Id == index) findIndex = i;
+            if (clients[i].No == index) findIndex = i;
         }
 
         if (findIndex == -1) return;
@@ -62,7 +62,7 @@ public class Repository
             foreach (var e in clients)
             {
                 string note = string.Empty;
-                note += $"{e.Passport,3}\t";
+                note += $"{e.No}\t";
                 note += $"{e.Date,20}\t";
                 note += $"{e.FullName,40}\t";
                 note += $"{e.Age,3}\t";
@@ -110,7 +110,6 @@ public class Repository
     }
     private int SortDescending(Client x, Client y)
     {
-        //-1, 1, 0
         return x.DateOfBirth < y.DateOfBirth ? 1 : x.DateOfBirth > y.DateOfBirth ? -1 : 0;
     }
 
