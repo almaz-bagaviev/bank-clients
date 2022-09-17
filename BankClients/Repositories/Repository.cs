@@ -1,11 +1,10 @@
-﻿using System.Text;
-
-namespace BankClients.Repositories
+﻿namespace BankClients.Repositories
 {
     public class Repository
     {
         static Random random;
         public List<Client> Clients { get; set; }
+        ClientsContext context;
 
         static Repository()
         {
@@ -15,6 +14,7 @@ namespace BankClients.Repositories
         public Repository(List<Client> clients)
         {
             this.Clients = clients;
+            this.context = new();
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace BankClients.Repositories
                 string line;
                 while ((line = streamReader.ReadLine()) != null) //пока строка не будет пустой
                 {
-                    Console.WriteLine(streamReader.ReadLine());
+                    WriteLine(streamReader.ReadLine());
                 }
             };
         }
@@ -141,6 +141,15 @@ namespace BankClients.Repositories
                 stringBuilder.Append($"{Clients[i]}\n");
             }
             return stringBuilder.ToString();
+        }
+
+        public void Save2DB()
+        {
+            foreach (var addClients in Clients)
+            {
+                context.ClientTable.Add(addClients);
+            }
+            context.SaveChanges();
         }
     }
 }
