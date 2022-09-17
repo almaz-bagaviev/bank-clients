@@ -77,7 +77,7 @@ public class AppModel
     private static void Menu()
     {
         string userChoice = string.Empty;
-        while (userChoice != "7")
+        while (userChoice != "8")
         {
             StartText();
 
@@ -91,7 +91,8 @@ public class AppModel
                 case "4": repository.SortByDateOfBirth_Ascending(); break;
                 case "5": repository.SortByDateOfBirth_Descending(); break;
                 case "6": repository.Save(UserPath()); break;
-                case "7": break;
+                case "7": repository.Save2DB(); break;
+                case "8": break;
 
                 default: WriteLine($"Выберите правильный пукт Меню\n"); break;
             }
@@ -115,7 +116,8 @@ public class AppModel
                 $"\nСортировка по возрастанию даты - 4" +
                 $"\nСортировка по убыванию даты - 5" +
                 $"\nСохранить в файл - 6" +
-                $"\nВыход - 7";
+                $"\nСохранить в Базу данных - 7" +
+                $"\nВыход - 8";
 
         WriteLine(text);
     }
