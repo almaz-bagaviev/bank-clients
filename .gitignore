@@ -1,0 +1,6 @@
+#Visual Studio files
+bin/
+.vs/
+obj/
+*.csproj
+*.sln
