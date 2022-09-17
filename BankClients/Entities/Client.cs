@@ -1,59 +1,43 @@
 ﻿namespace BankClients.Entities;
 
-public struct Client
+public class Client
 {
-
-    /// <summary>
-    /// ID
-    /// </summary>
-    public int ID { get; set; }
-
-    /// <summary>
-    /// Дата и время добавления записи
-    /// </summary>
+    public int Id { get; set; }
+    public int No { get; set; }
     public DateTime Date { get; set; }
-
-    /// <summary>
-    /// Ф.И.О сотрудника
-    /// </summary>
     public string FullName { get; set; }
-
-    /// <summary>
-    /// Возраст
-    /// </summary>
     public int Age { get; set; }
-
-    /// <summary>
-    /// Рост
-    /// </summary>
-    public int Growth { get; set; }
-
-    /// <summary>
-    /// Дата рождения
-    /// </summary>
+    public string Passport { get; set; }
     public DateTime DateOfBirth { get; set; }
-
-    /// <summary>
-    /// Место рождения
-    /// </summary>
     public string PlaceOfBirth { get; set; }
 
     /// <summary>
-    /// Конструктор Client
+    /// Клиент
     /// </summary>
-    public Client(int ID, DateTime Date, string FullName, int Age, int Growth, DateTime DateOfBirth, string PlaceOfBirth)
+    /// <param name="no">Уникальный идентификатор</param>
+    /// <param name="fullName">Ф.И.О</param>
+    /// <param name="age">Возраст</param>
+    /// <param name="passport">Паспортные данные</param>
+    /// <param name="dateOfBirth">Дата рождения</param>
+    /// <param name="placeOfBirth">Место рождения</param>
+    public Client(int no, string fullName, int age, string passport, DateTime dateOfBirth, string placeOfBirth)
     {
-        this.ID = ID;
-        this.Date = Date;
-        this.FullName = FullName;
-        this.Age = Age;
-        this.Growth = Growth;
-        this.DateOfBirth = DateOfBirth;
-        this.PlaceOfBirth = PlaceOfBirth;
+        this.No = no;
+        this.Date = DateTime.Now;
+        this.FullName = fullName;
+        this.Age = age;
+        this.Passport = passport;
+        this.DateOfBirth = dateOfBirth;
+        this.PlaceOfBirth = placeOfBirth;
+    }
+
+    public Client()
+    {
+
     }
 
     public override string ToString()
     {
-        return $"{ID,3} {Date,20} {FullName,40} {Age,3} {Growth,4} {DateOfBirth.ToShortDateString(),10} {PlaceOfBirth,22}";
+        return $"{No,3} {Date,20} {FullName,40} {Age,3} {Passport,12} {DateOfBirth.ToShortDateString(),10} {PlaceOfBirth,22}";
     }
 }
