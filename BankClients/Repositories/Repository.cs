@@ -19,20 +19,19 @@ namespace BankClients.Repositories
         /// <returns></returns>
         static public List<Client> GetRepository()
         {
-            List<Client> newWorker = new();
+            List<Client> newClient = new();
             for (int i = 0; i < 5; i++)
             {
-                newWorker.Add(new Client(
+                newClient.Add(new Client(
                     i + 1,
-                    DateTime.Now,
                     $"Сотрудник {i + 1}",
                     random.Next(18, 60),
-                    random.Next(155, 201),
+                    "****  ******",
                     new DateTime(random.Next(1970, 2004), random.Next(1, 13), random.Next(1, 29)),
                     $"Город {i + 1}"
                     ));
             }
-            return newWorker;
+            return newClient;
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace BankClients.Repositories
             int findIndex = -1;
             for (int i = 0; i < workers.Count; i++)
             {
-                if (workers[i].ID == index) findIndex = i;
+                if (workers[i].No == index) findIndex = i;
             }
 
             if (findIndex == -1) return; //если findIndex =-1, то ничего не будем делать
@@ -78,11 +77,11 @@ namespace BankClients.Repositories
                 foreach (Client e in workers)
                 {
                     string note = string.Empty;
-                    note += $"{e.ID,3}\t";
+                    note += $"{e.No}\t";
                     note += $"{e.Date,20}\t";
                     note += $"{e.FullName,40}\t";
                     note += $"{e.Age,3}\t";
-                    note += $"{e.Growth,4}\t";
+                    note += $"{e.Passport,12}\t";
                     note += $"{e.DateOfBirth.ToShortDateString(),10}\t";
                     note += $"{e.PlaceOfBirth,22}\t";
 
