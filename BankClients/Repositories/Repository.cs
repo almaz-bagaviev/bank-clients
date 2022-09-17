@@ -5,19 +5,23 @@ namespace BankClients.Repositories
     public class Repository
     {
         static Random random;
-        List<Client> workers;
+        public List<Client> Clients { get; set; }
 
-        public Repository(List<Client> workers)
+        static Repository()
         {
-            this.workers = workers;
             random = new();
+        }
+
+        public Repository(List<Client> clients)
+        {
+            this.Clients = clients;
         }
 
         /// <summary>
         /// Метод добавления рандомных сотрудников
         /// </summary>
         /// <returns></returns>
-        static public List<Client> GetRepository()
+        public static List<Client> GetRepository()
         {
             List<Client> newClient = new();
             for (int i = 0; i < 5; i++)
@@ -40,8 +44,8 @@ namespace BankClients.Repositories
         /// <param name="arg"></param>
         public void Add(Client arg)
         {
-            workers.Add(arg);
-            workers[workers.Count - 1] = arg;
+            Clients.Add(arg);
+            Clients[Clients.Count - 1] = arg;
         }
 
         /// <summary>
@@ -51,19 +55,19 @@ namespace BankClients.Repositories
         public void Remove(int index)
         {
             int findIndex = -1;
-            for (int i = 0; i < workers.Count; i++)
+            for (int i = 0; i < Clients.Count; i++)
             {
-                if (workers[i].No == index) findIndex = i;
+                if (Clients[i].No == index) findIndex = i;
             }
 
             if (findIndex == -1) return; //если findIndex =-1, то ничего не будем делать
 
-            for (int i = findIndex; i < workers.Count - 1; i++)
+            for (int i = findIndex; i < Clients.Count - 1; i++)
             {
-                workers[findIndex] = workers[findIndex + 1];
+                Clients[findIndex] = Clients[findIndex + 1];
             }
 
-            workers.Remove(workers[findIndex]);
+            Clients.Remove(Clients[findIndex]);
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace BankClients.Repositories
         {
             using (StreamWriter streamWriter = new StreamWriter(path))
             {
-                foreach (Client e in workers)
+                foreach (Client e in Clients)
                 {
                     string note = string.Empty;
                     note += $"{e.No}\t";
@@ -106,7 +110,7 @@ namespace BankClients.Repositories
         public void SortByDateOfBirth_Ascending()
         {
             //public void Sort(int index, int count, IComparer<T> comparer);
-            workers.Sort(SortAscending);
+            Clients.Sort(SortAscending);
         }
         private int SortAscending(Client x, Client y)
         {
@@ -118,7 +122,7 @@ namespace BankClients.Repositories
         /// </summary>
         public void SortByDateOfBirth_Descending()
         {
-            workers.Sort(SortDescending);
+            Clients.Sort(SortDescending);
         }
         private int SortDescending(Client x, Client y)
         {
@@ -132,9 +136,9 @@ namespace BankClients.Repositories
         public string Print()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < workers.Count; i++)
+            for (int i = 0; i < Clients.Count; i++)
             {
-                stringBuilder.Append($"{workers[i]}\n");
+                stringBuilder.Append($"{Clients[i]}\n");
             }
             return stringBuilder.ToString();
         }
