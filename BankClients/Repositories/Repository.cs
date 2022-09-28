@@ -103,18 +103,19 @@
             };
         }
 
-
         /// <summary>
         /// Сортировка по дате Дней рождения сотрудников по Возрастанию
         /// </summary>
         public void SortByDateOfBirth_Ascending()
         {
-            //public void Sort(int index, int count, IComparer<T> comparer);
-            Clients.Sort(SortAscending);
-        }
-        private int SortAscending(Client x, Client y)
-        {
-            return x.DateOfBirth < y.DateOfBirth ? -1 : x.DateOfBirth > y.DateOfBirth ? 1 : 0;
+            var sort = Clients.OrderBy(x => x.DateOfBirth)
+                .ThenBy(x => x.Date)
+                .ThenBy(x => x.FullName)
+                .ThenBy(x => x.Age)
+                .ThenBy(x => x.Passport)
+                .ThenBy(x => x.PlaceOfBirth);
+
+            foreach (var c in sort) WriteLine(c);
         }
 
         /// <summary>
@@ -122,12 +123,14 @@
         /// </summary>
         public void SortByDateOfBirth_Descending()
         {
-            Clients.Sort(SortDescending);
-        }
-        private int SortDescending(Client x, Client y)
-        {
-            //-1, 1, 0
-            return x.DateOfBirth < y.DateOfBirth ? 1 : x.DateOfBirth > y.DateOfBirth ? -1 : 0;
+            var sort = Clients.OrderByDescending(x => x.DateOfBirth)
+                .ThenByDescending(x => x.Date)
+                .ThenByDescending(x => x.FullName)
+                .ThenByDescending(x => x.Age)
+                .ThenByDescending(x => x.Passport)
+                .ThenByDescending(x => x.PlaceOfBirth);
+
+            foreach (var c in sort) WriteLine(c);
         }
 
         /// <summary>
